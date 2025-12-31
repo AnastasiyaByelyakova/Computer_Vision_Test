@@ -5,29 +5,7 @@ from memory_profiler import memory_usage
 
 # Import the newly compiled Cython module
 import color_processor_cython
-
-def time_it(func):
-    """
-    A decorator to measure the execution time of a function.
-    """
-    def wrapper(*args, **kwargs):
-        print(f"Running '{func.__name__}'...")
-        start_time = time.time()
-        result = func(*args, **kwargs)
-        end_time = time.time()
-        print(f"Execution took {end_time - start_time:.4f} seconds")
-        return result
-    return wrapper
-
-def memory_it(func):
-    """
-    A decorator to measure the peak memory usage of a function.
-    """
-    def wrapper(*args, **kwargs):
-        mem_usage, retval = memory_usage((func, args, kwargs), retval=True, max_usage=True)
-        print(f"Peak memory usage of '{func.__name__}': {mem_usage:.2f} MiB")
-        return retval
-    return wrapper
+from decorators import time_it, memory_it
 
 def read_image(image_path):
     """Reads an image from a given path."""
@@ -69,19 +47,15 @@ def process_polygons_cython_wrapper(base_image, mask_image):
 
 
 if __name__ == '__main__':
-    image_path1 = '/media/cassie/DATA/test_task_CV3/color_mask.png'
-    mask_path = '/media/cassie/DATA/test_task_CV3/mask.png'
-    overlay_output_path = '/media/cassie/DATA/test_task_CV3/overlay.png'
-    processed_output_path = '/media/cassie/DATA/test_task_CV3/processed_image.png'
+    image_path1 = 'color_mask.png'
+    mask_path = 'mask.png'
+    processed_output_path = 'processed_image.png'
 
     base_image = read_image(image_path1)
     mask_image = read_image(mask_path)
 
     if base_image is not None and mask_image is not None:
         overlaid_image = apply_mask_overlay(base_image, mask_image)
-        if overlaid_image is not None:
-            cv2.imwrite(overlay_output_path, overlaid_image)
-            print(f"Overlay image saved to {overlay_output_path}")
 
         # Use the Cython implementation
         processed_image = process_polygons_cython_wrapper(base_image, mask_image)

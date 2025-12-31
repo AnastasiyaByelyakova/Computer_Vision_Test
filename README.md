@@ -44,6 +44,6 @@ The script will generate the output file in the project directory - `processed_i
 The script will also print the execution time and peak memory usage of the main processing function to the console.
 
 ```bash
-Execution took 0.7920 seconds
-Peak memory usage of 'wrapper': 217.00 MiB
+Execution took 0.2261 seconds
+Peak memory usage of 'wrapper': 211.20 MiB
 ```
